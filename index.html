@@ -11,7 +11,28 @@
         <h1>Password Manager</h1>
     </header>
     <main>
+        <!-- Add Password Button -->
         <button id="add-password-btn">Add Password</button>
+
+        <!-- Add Password Form (Hidden Initially) -->
+        <div id="add-password-form" class="hidden">
+            <h2>Add Password</h2>
+            <form id="password-form">
+                <label for="website">Website:</label>
+                <input type="text" id="website" placeholder="Enter website URL" required>
+                
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Enter username" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+                
+                <button type="submit">Save</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </form>
+        </div>
+
+        <!-- Password Table -->
         <table id="password-table">
             <thead>
                 <tr>
