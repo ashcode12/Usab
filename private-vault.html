@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Vault - Password Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="private-vault.html">Private Vault</a></li>
+                <li><a href="shared-vault.html">Shared Vault</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="https://forms.gle/bmb6VYAr36yVSub59" target="_blank">Feedback</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="intro">
+        <h1>Private Vault</h1>
+        <p>Manage your passwords securely and efficiently. Use the features below to organize your private information.</p>
+    </section>
+
+    <main>
+        <!-- Add Password Button -->
+        <button id="add-password-btn">Add Password</button>
+
+        <!-- Add Password Form (Hidden Initially) -->
+        <div id="add-password-form" class="hidden">
+            <h2>Add Password</h2>
+            <form id="password-form">
+                <label for="website">Website:</label>
+                <input type="text" id="website" placeholder="Enter website URL" required>
+                
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Enter username" required>
+                
+                <label for="password">Password:</label>
+                <div class="password-field">
+                    <input type="password" id="password" placeholder="Enter password" required>
+                    <button type="button" id="toggle-password" aria-label="Show password">👁️</button>
+                </div>
+                <div id="password-strength" class="hidden"></div>
+                
+                <button type="submit">Save</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </form>
+        </div>
+
+        <!-- Password Table -->
+        <table id="password-table">
+            <thead>
+                <tr>
+                    <th>Website</th>
+                    <th>Username</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Password entries will go here -->
+            </tbody>
+        </table>
+
+        <!-- Back Button -->
+        <button onclick="window.location.href='home.html'" style="margin-top: 1rem;">Back to Home</button>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
