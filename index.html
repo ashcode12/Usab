@@ -25,7 +25,11 @@
                 <input type="text" id="username" placeholder="Enter username" required>
                 
                 <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="Enter password" required>
+                <div class="password-field">
+                    <input type="password" id="password" placeholder="Enter password" required>
+                    <button type="button" id="toggle-password" aria-label="Show password">👁️</button>
+                </div>
+                <div id="password-strength" class="hidden"></div>
                 
                 <button type="submit">Save</button>
                 <button type="button" id="cancel-btn">Cancel</button>

@@ -7,6 +7,7 @@ const passwordForm = document.getElementById("password-form");
 const addPasswordBtn = document.getElementById("add-password-btn");
 const cancelBtn = document.getElementById("cancel-btn");
 const passwordTableBody = document.querySelector("#password-table tbody");
+const togglePasswordButton = document.getElementById("toggle-password");
 
 // Utility: Show feedback message
 function showMessage(message) {
@@ -116,6 +117,57 @@ function deletePassword(index) {
         showMessage("Password deleted successfully!");
     }
 }
+
+// Toggle Password Visibility
+togglePasswordButton.addEventListener("click", () => {
+    const passwordField = document.getElementById("password");
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        togglePasswordButton.textContent = "🙈"; // Change icon to 'Hide'
+        togglePasswordButton.setAttribute("aria-label", "Hide password");
+    } else {
+        passwordField.type = "password";
+        togglePasswordButton.textContent = "👁️"; // Change icon to 'Show'
+        togglePasswordButton.setAttribute("aria-label", "Show password");
+    }
+});
+
+// Password Strength Indicator
+document.getElementById("password").addEventListener("input", () => {
+    const password = document.getElementById("password").value;
+    const strengthIndicator = document.getElementById("password-strength");
+
+    // Function to calculate password strength
+    const calculateStrength = (password) => {
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[@$!%*?&#]/.test(password)) strength++;
+        return strength;
+    };
+
+    const strength = calculateStrength(password);
+
+    // Update strength indicator
+    strengthIndicator.classList.remove("weak", "medium", "strong", "hidden");
+    if (strength <= 2) {
+        strengthIndicator.textContent = "Weak";
+        strengthIndicator.classList.add("weak");
+    } else if (strength === 3 || strength === 4) {
+        strengthIndicator.textContent = "Medium";
+        strengthIndicator.classList.add("medium");
+    } else if (strength === 5) {
+        strengthIndicator.textContent = "Strong";
+        strengthIndicator.classList.add("strong");
+    }
+
+    // Hide the indicator if no password
+    if (!password) {
+        strengthIndicator.classList.add("hidden");
+    }
+});
 
 // Event Listeners
 addPasswordBtn.addEventListener("click", () => {
