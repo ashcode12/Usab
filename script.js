@@ -10,16 +10,26 @@ const passwordTableBody = document.querySelector("#password-table tbody");
 const togglePasswordButton = document.getElementById("toggle-password");
 
 // Utility: Show feedback message
-function showMessage(message) {
+function showMessage(message, type = "success", duration = 3000) {
     const msgDiv = document.createElement("div");
     msgDiv.textContent = message;
-    msgDiv.className = "message";
+    msgDiv.className = `message ${type}`;
+
+    if (type === "undo") {
+        msgDiv.addEventListener("click", () => {
+            const undoHandler = msgDiv.dataset.undoHandler;
+            if (undoHandler) window[undoHandler]();
+        });
+        msgDiv.textContent += " (Click to Undo)";
+    }
+
     document.body.appendChild(msgDiv);
 
     setTimeout(() => {
         msgDiv.remove();
-    }, 3000);
+    }, duration);
 }
+
 
 // Utility: Clear form inputs
 function clearForm() {
@@ -28,7 +38,7 @@ function clearForm() {
     delete passwordForm.dataset.index;
 }
 
-// Populate the password table
+// Populate the password table with intuitive icons for actions
 function populateTable(data = passwords) {
     passwordTableBody.innerHTML = ""; // Clear existing rows
 
@@ -38,9 +48,9 @@ function populateTable(data = passwords) {
             <td>${password.website}</td>
             <td>${password.username}</td>
             <td>
-                <button onclick="editPassword(${index})">Edit</button>
-                <button onclick="deletePassword(${index})">Delete</button>
-                <button onclick="copyPassword(${index})">Copy</button>
+                <button onclick="editPassword(${index})" title="Edit"><span role="img" aria-label="Edit">✏️</span></button>
+                <button onclick="deletePassword(${index})" title="Delete"><span role="img" aria-label="Delete">🗑️</span></button>
+                <button onclick="copyPassword(${index})" title="Copy"><span role="img" aria-label="Copy">📋</span></button>
             </td>
         `;
         passwordTableBody.appendChild(row);
@@ -110,13 +120,30 @@ function editPassword(index) {
 
 // Delete Password
 function deletePassword(index) {
+    const deletedPassword = passwords[index];
+
     if (confirm("Are you sure you want to delete this password?")) {
         passwords.splice(index, 1);
         localStorage.setItem("passwords", JSON.stringify(passwords));
         populateTable();
-        showMessage("Password deleted successfully!");
+
+        showMessage("Password deleted! Click here to undo.", "undo", 5000);
+
+        // Store undo logic in message dataset
+        const undoDelete = () => {
+            passwords.splice(index, 0, deletedPassword);
+            localStorage.setItem("passwords", JSON.stringify(passwords));
+            populateTable();
+            showMessage("Delete undone!", "success");
+        };
+
+        const msgDiv = document.querySelector(".message.undo");
+        msgDiv.dataset.undoHandler = `undoDelete`;
+        window.undoDelete = undoDelete; // Expose function globally for undo
     }
 }
+
+
 
 // Toggle Password Visibility
 togglePasswordButton.addEventListener("click", () => {
@@ -195,6 +222,38 @@ passwordForm.addEventListener("submit", (event) => {
 addPasswordBtn.insertAdjacentHTML("afterend", `
     <input type="text" id="search-bar" placeholder="Search by website or username" oninput="filterPasswords()">
 `);
+
+// Keyboard Shortcuts
+
+document.addEventListener("keydown", (event) => {
+    if (event.ctrlKey || event.metaKey) {
+        switch (event.key) {
+            case "f": // Search
+                event.preventDefault();
+                document.getElementById("search-bar").focus();
+                break;
+            case "n": // Add password
+                event.preventDefault();
+                addPasswordBtn.click();
+                break;
+            case "1": // Home
+                window.location.href = "home.html";
+                break;
+            case "2": // Private Vault
+                window.location.href = "private-vault.html";
+                break;
+            case "3": // Shared Vault
+                window.location.href = "shared-vault.html";
+                break;
+            case "4": // About
+                window.location.href = "about.html";
+                break;
+            default:
+                break;
+        }
+    }
+});
+
 
 // Initial population of the table
 populateTable();
