@@ -123,3 +123,51 @@ button:active {
     display: none;
 }
 
+/* Navigation Bar */
+nav {
+    background-color: #4CAF50;
+    padding: 1rem;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #dfffd4;
+}
+
+/* Introductory Section */
+#intro {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#intro h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+#intro p {
+    font-size: 1.2rem;
+    color: #555;
+}
